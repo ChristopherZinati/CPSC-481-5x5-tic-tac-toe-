@@ -5,7 +5,7 @@ from functools import partial
 from tkinter import messagebox
 from goalStates import winner
 
-sign = 0  # indicates whose turn it is
+sign = 0  #indicates whos turn it is
 max_depth = 5 #keep at 5 unless on beefy pc
 previous_hashed_states = {} #store computed states for future use
 
@@ -25,8 +25,8 @@ def get_text_agent(i, j, gb, l1, l2):
             board[i][j] = "O"
         sign += 1
         button[i][j].config(text=board[i][j])
-    # Check if there's a winner or if it's a tie
-    if winner(board, "X"):
+
+    if winner(board, "X"): #check if there's a winner or if it's a tie
         gb.destroy()
         messagebox.showinfo("Winner", "Player won the match")
         return
@@ -38,11 +38,10 @@ def get_text_agent(i, j, gb, l1, l2):
         gb.destroy()
         messagebox.showinfo("Tie Game", "Tie Game")
         return
-    # If it's agent's turn it'll make the turn
-    if sign % 2 != 0:
+
+    if sign % 2 != 0: #if it's agent's turn it'll make the turn
         move = agent()
-        if move:
-            # Disable the buttons to prevent clicking during agent move.
+        if move: #disable the buttons to prevent clicking during agent move.
             button[move[0]][move[1]].config(state=DISABLED)
             get_text_agent(move[0], move[1], gb, l1, l2)
 
@@ -53,7 +52,7 @@ def isfull(bd):
     return True
 
 def minimax(bd, depth, alpha, beta, isMaximizing):
-    board_tuple = tuple(tuple(row) for row in bd)  # Convert board state to hashable type
+    board_tuple = tuple(tuple(row) for row in bd)  #convert board state to hashable type
     if board_tuple in previous_hashed_states:       #see if a state has been computed already
         return previous_hashed_states[board_tuple]
 
@@ -71,12 +70,12 @@ def minimax(bd, depth, alpha, beta, isMaximizing):
                 if bd[i][j] == ' ':
                     bd[i][j] = 'O'
                     eval = minimax(bd, depth - 1, alpha, beta, False)
-                    bd[i][j] = ' '  # Undo move
+                    bd[i][j] = ' '  #undo a move
                     maxEval = max(maxEval, eval)
                     alpha = max(alpha, eval)
                     if beta <= alpha:
                         break
-        previous_hashed_states[board_tuple] = maxEval  # Store result
+        previous_hashed_states[board_tuple] = maxEval  #store the state
         return maxEval
     else:
         minEval = float('inf')
@@ -85,22 +84,22 @@ def minimax(bd, depth, alpha, beta, isMaximizing):
                 if bd[i][j] == ' ':
                     bd[i][j] = 'X'
                     eval = minimax(bd, depth - 1, alpha, beta, True)
-                    bd[i][j] = ' '  # Undo move
+                    bd[i][j] = ' '  #undo move
                     minEval = min(minEval, eval)
                     beta = min(beta, eval)
                     if beta <= alpha:
                         break
-        previous_hashed_states[board_tuple] = minEval  # Store result
+        previous_hashed_states[board_tuple] = minEval  #store the state
         return minEval
 
 def agent():
-    bestScore = -float('inf')
+    bestScore = -float('inf') #agent is maximizer so initiate with value of -inf
     bestMove = None
     for i in range(5):
         for j in range(5):
             if board[i][j] == ' ':
                 board[i][j] = 'O'
-                score = minimax(board, max_depth, -float('inf'), float('inf'), False)
+                score = minimax(board, max_depth, -float('inf'), float('inf'), False) #alpha = -inf, beta +inf
                 board[i][j] = ' '
                 if score > bestScore:
                     bestScore = score
