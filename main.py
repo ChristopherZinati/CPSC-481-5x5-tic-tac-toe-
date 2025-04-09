@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from functools import partial
 from tkinter import messagebox
 from goalStates import winner
 
