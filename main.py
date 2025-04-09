@@ -72,7 +72,7 @@ def minimax(bd, depth, alpha, beta, isMaximizing):
                     bd[i][j] = ' '  #undo a move
                     maxEval = max(maxEval, eval)
                     alpha = max(alpha, eval)
-                    if beta <= alpha:
+                    if beta <= alpha: #prune this branch
                         break
         previous_hashed_states[board_tuple] = maxEval  #store the state
         return maxEval
@@ -86,7 +86,7 @@ def minimax(bd, depth, alpha, beta, isMaximizing):
                     bd[i][j] = ' '  #undo move
                     minEval = min(minEval, eval)
                     beta = min(beta, eval)
-                    if beta <= alpha:
+                    if beta <= alpha: #prune this branch
                         break
         previous_hashed_states[board_tuple] = minEval  #store the state
         return minEval

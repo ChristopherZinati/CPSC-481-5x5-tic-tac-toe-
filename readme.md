@@ -17,5 +17,5 @@ python main.py
 ```
 
 **_references_**
-based on the implementation of classic tic tac toe
+based on this implementation of classic tic tac toe
 https://www.geeksforgeeks.org/tic-tac-toe-game-with-gui-using-tkinter-in-python/
