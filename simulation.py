@@ -75,8 +75,8 @@ class RandomCPU:
         self.marker = marker
 
     def get_move(self, board):
-        empties = [(i, j) for i in range(BOARD_SIZE) for j in range(BOARD_SIZE) if board[i][j] == ' ']
-        return random.choice(empties) if empties else None
+        empty = [(i, j) for i in range(BOARD_SIZE) for j in range(BOARD_SIZE) if board[i][j] == ' ']
+        return random.choice(empty) if empty else None
 
 def simulate_game(bot1, bot2):
     board = [[' ']*BOARD_SIZE for _ in range(BOARD_SIZE)]
