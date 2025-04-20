@@ -1,0 +1,7 @@
+depth,opponent,X_wins,O_wins,Draws,Branches_pruned
+1,random,783,2,215,0
+1,minimax,0,0,1000,0
+2,random,775,8,217,10743406
+2,minimax,0,0,1000,11044000
+3,random,756,0,244,10742473
+3,minimax,0,0,1000,11044000

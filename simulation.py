@@ -13,7 +13,7 @@ class MinimaxAgent:
         self.opponent = 'O' if marker == 'X' else 'X'
         self.depth = depth
         self.cache = {}
-
+        self.pruned = 0
     def minimax(self, board, depth, alpha, beta, is_maximizing):
         state = tuple(tuple(r) for r in board)
         if state in self.cache:
@@ -35,6 +35,7 @@ class MinimaxAgent:
                         best = max(best, val)
                         alpha = max(alpha, val)
                         if beta <= alpha:
+                            self.pruned += 1
                             break
             self.cache[state] = best
             return best
@@ -49,6 +50,7 @@ class MinimaxAgent:
                         best = min(best, val)
                         beta = min(beta, val)
                         if beta <= alpha:
+                            self.pruned
                             break
             self.cache[state] = best
             return best
@@ -92,7 +94,7 @@ def simulate_game(bot1, bot2):
         turn += 1
 
 def main():
-    depths = [1, 2, 3, 4, 5]
+    depths = [1, 2, 3]
     num_games = 1000
     results = []
     for depth in depths:
@@ -110,8 +112,8 @@ def main():
                 draws += 1
             if (i+1) % 100 == 0:
                 print(f"  Random match: {i+1}/{num_games}")
-        print(f"Depth {depth} Minimax vs Random results: X_wins={xwins}, O_wins={owins}, Draws={draws}")
-        results.append({'depth': depth, 'opponent': 'random', 'X_wins': xwins, 'O_wins': owins, 'Draws': draws})
+        print(f"Depth {depth} Minimax vs Random results: X_wins={xwins}, O_wins={owins}, Draws={draws}, Pruned={m.pruned}")
+        results.append({'depth': depth, 'opponent': 'random', 'X_wins': xwins, 'O_wins': owins, 'Draws': draws, 'Branches_pruned': m.pruned})
 
         print(f"Running depth {depth} Minimax vs Minimax")
         m1 = MinimaxAgent('X', depth)
@@ -127,11 +129,11 @@ def main():
                 draws += 1
             if (i+1) % 100 == 0:
                 print(f"  Minimax match: {i+1}/{num_games}")
-        print(f"Depth {depth} Minimax vs Minimax results: X_wins={xwins}, O_wins={owins}, Draws={draws}")
-        results.append({'depth': depth, 'opponent': 'minimax', 'X_wins': xwins, 'O_wins': owins, 'Draws': draws})
+        print(f"Depth {depth} Minimax vs Minimax results: X_wins={xwins}, O_wins={owins}, Draws={draws}, Pruned={m1.pruned}")
+        results.append({'depth': depth, 'opponent': 'minimax', 'X_wins': xwins, 'O_wins': owins, 'Draws': draws, 'Branches_pruned': m1.pruned})
 
-    with open('/Users/chriszinati/Desktop/CPSC-481/CPSC-481-5x5-tic-tac-toe-/simulation_results.csv', 'w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=['depth', 'opponent', 'X_wins', 'O_wins', 'Draws'])
+    with open('simulation_results.csv', 'w', newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=['depth', 'opponent', 'X_wins', 'O_wins', 'Draws', 'Branches_pruned'])
         writer.writeheader()
         writer.writerows(results)
     print("Results written to simulation_results.csv")
